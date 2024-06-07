@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulário de Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+      .login-form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .login-form h2 {
+        margin-bottom: 20px;
+      }
+      .login-form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .login-form button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .login-form button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-form">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Senha"
+          required
+        />
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          const data = new URLSearchParams();
+          data.append("email", email);
+          data.append("password", password);
+
+          const options = {
+            method: "POST",
+            headers: {
+              accept: "application/json",
+              Authorization: 'x-auth-token: "5fd4ba3214ca68a7222c6ca1c1670555"',
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: data,
+          };
+
+          fetch("https://academy.proaero.aero/api/1/login", options)
+            .then((response) => response.json())
+            .then((response) => {
+              if (
+                response.http_status === 200 &&
+                response.data &&
+                response.data.link
+              ) {
+                // Remove os dois "//" no início do link
+                const link = response.data.link.replace(/^\/\//, "https://");
+                window.location.href = link;
+              } else {
+                console.error("Login failed: ", response.message);
+              }
+            })
+            .catch((err) => console.error(err));
+        });
+    </script>
+  </body>
+</html>
