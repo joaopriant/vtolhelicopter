@@ -89,10 +89,10 @@
             body: new URLSearchParams({
               email,
               password,
-            }).toString(),
+            }),
           };
 
-          fetch(options)
+          fetch("https://academy.proaero.aero/api/1/login", options)
             .then((response) => response.json())
             .then((response) => {
               if (
