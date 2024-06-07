@@ -76,21 +76,23 @@
           const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
 
-          const data = new URLSearchParams();
-          data.append("email", email);
-          data.append("password", password);
+          console.log(email, password);
 
           const options = {
             method: "POST",
+            url: "https://academy.proaero.aero/api/1/login",
             headers: {
               accept: "application/json",
-              Authorization: 'x-auth-token: "5fd4ba3214ca68a7222c6ca1c1670555"',
+              Authorization: "Bearer 5fd4ba3214ca68a7222c6ca1c1670555",
               "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: data,
+            body: new URLSearchParams({
+              email,
+              password,
+            }).toString(),
           };
 
-          fetch("https://academy.proaero.aero/api/1/login", options)
+          fetch(options)
             .then((response) => response.json())
             .then((response) => {
               if (
